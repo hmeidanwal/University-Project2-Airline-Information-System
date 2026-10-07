@@ -1,0 +1,13 @@
+# Booking - Test Scenarios
+
+This document outlines key test scenarios for the booking feature, formatted for GitHub in a clean table format.
+
+| **Name**                            | **Action**                                                                                  | **Expected Result**                                                                                                                                           |
+|-------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Successful Booking with Valid Data  | A sales employee fills out valid booking info and submits the form.                        | Name is capitalized ("John Doe"); email and seat format pass; booking saved to DB; Booking ID is returned and shown.                                         |
+| Booking Fails Due to Invalid Email  | User submits form with incorrectly formatted email.                                         | Email validation fails; `InvalidCustomerDataException` thrown; HTTP 400 with message "Invalid email format"; no DB changes.                                   |
+| Booking Fails Due to Invalid Seat   | User inputs seat number "15Z" that doesn't match the format.                               | Seat validation fails (regex mismatch); `InvalidBookingDataException` thrown; HTTP 400 with message "Invalid seat format"; no DB changes.                     |
+| Seat Already Taken                  | User selects seat "2A" which is already booked.                                             | Seat availability check fails; `SeatNotAvailableException` thrown; HTTP 409 with message "Seat already taken"; booking is not saved.                          |
+| Booking with Max Valid Seat Number  | User books seat "10F", the highest allowed value.                                          | Validation passes; booking is saved; confirmation is shown.                                                                                                    |
+| Customer Name Capitalization        | User enters name in lowercase ("mary jane smith") and submits booking.                     | Throws InvalidBookingData exception  format.                                                                           |
+| Multiple Validation Failures        | User enters both invalid email and seat (e.g., "bad-email", "99X") and submits form.       | Validation fails on first invalid field; appropriate exception is thrown; booking is rejected; clear error message shown; DB is unaffected.                   |

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ais-postgres
+    environment:
+      POSTGRES_DB: aisdb
+      POSTGRES_USER: aisdemouser
+      POSTGRES_PASSWORD: ais
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: postgres -c 'max_connections=1000'
+
+volumes:
+  postgres_data: 
